@@ -3,27 +3,26 @@ using UnityEngine;
 
 public class LevelGeneration : MonoBehaviour
 {
-    private List<Vector2> tilesPositions = new List<Vector2>();
-    
     private List<GameObject> rows = new List<GameObject>();
     
-    [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private TileManager tileManager;
+    
+    [SerializeField] private GameObject[] tilesPrefabs;
+    
+    [SerializeField] private CoordinateTailes coordinateTailes;
     
     private float tileWidth = .9f; 
     private float tileLength = 1.28f;
 
     private void Start()
     {
-        GenerateAndSpawn(3, 3, 2);
-        
+        GenerateAndSpawn(4, 3, 1);
     }
     
     private void GenerateAndSpawn(int width, int length, int countRows)
     {
-        foreach (var row in rows)
-            Destroy(row);
-        rows.Clear();Ы
-
+        rows.Clear();
+        
         for (int i = 0; i < countRows; i++)
         {
             GameObject rowParent = new GameObject($"Raw{i}");
@@ -34,14 +33,27 @@ public class LevelGeneration : MonoBehaviour
 
             rows.Add(rowParent);
             
-            for (int z = 0; z < length; z++)
+            
+            for (int z = 0; z < length - i; z++)
             {
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < width - i; x++)
                 {
-                    Vector2 position = new Vector2(x * tileWidth + ((tileWidth/2)*i), z * tileLength + (-(tileLength/2)*i));
-                    Instantiate(tilePrefab, position, Quaternion.identity, rowParent.transform);
+                    if (length - i <= 1 || width - i <= 1) break;
+                    
+                    Vector2 position = new Vector2(x * tileWidth + ((tileWidth/2)*i), z * tileLength + ((tileLength/2)*i));
+                    GameObject tile = Instantiate(tilesPrefabs[Random.Range(0, tilesPrefabs.Length)], position, Quaternion.identity, rowParent.transform);
+
+                    var tileTag = tile.GetComponent<TileTag>();
+
+                    tileTag.coordinate = new Vector3Int(x + 1, z + 1, i + 1);
+                    coordinateTailes.coordinates.Add(new Vector3Int(x+1, z+1, i+1));
+                    
+                    tileTag.SetManager(tileManager);
+
                 }
             }
         }
+        
+        transform.localPosition = new Vector2(-width * tileWidth/2 * 100, -length * tileLength/2 * 100);
     }
 }

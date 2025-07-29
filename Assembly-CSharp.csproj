@@ -48,6 +48,7 @@
     <Compile Include="Assets\Scripts\CoordinateTailes.cs" />
     <Compile Include="Assets\Scripts\LevelGeneration.cs" />
     <Compile Include="Assets\Scripts\AvailableLogicTailes.cs" />
+    <Compile Include="Assets\Scripts\sasa.cs" />
     <Compile Include="Assets\Scripts\TileLogicScript.cs" />
     <Compile Include="Assets\Scripts\TileManager.cs" />
     <Compile Include="Assets\Scripts\TileTag.cs" />

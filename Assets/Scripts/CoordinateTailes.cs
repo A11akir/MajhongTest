@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class CoordinateTailes : MonoBehaviour
 {
-    public List<Vector3Int> coordinates;
+    public List<Vector3> coordinates;
 }
